@@ -1,0 +1,32 @@
+{
+  "name": "work-clock",
+  "version": "1.0.0",
+  "description": "Lets user know what time they should clock out at work.",
+  "main": "time.js",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "moment": "^2.22.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CompSciLauren/work-clock.git"
+  },
+  "keywords": [
+    "work",
+    "clock",
+    "time",
+    "promise",
+    "moment",
+    "momentjs"
+  ],
+  "author": "Lauren Stephenson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CompSciLauren/work-clock/issues"
+  },
+  "homepage": "https://github.com/CompSciLauren/work-clock#readme"
+}

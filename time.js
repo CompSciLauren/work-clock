@@ -1,26 +1,37 @@
 const readline = require('readline');
 const moment = require('moment');
+const chalk = require('chalk');
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
-const q1 = () => {
-  return new Promise((resolve, reject) => {
+const timesClockedOut = () => {
+  return new Promise(resolve => {
+    rl.question(
+      'How many times did you clock out today? Enter an integer value: ',
+      answer => {
+        const result = answer;
+        resolve(result);
+      }
+    );
+  });
+};
+
+const timeIn = () => {
+  return new Promise(resolve => {
     rl.question('Time in: ', answer => {
       const time = moment(answer, 'HH:mm a').format('LT');
-      console.log('TIME: ', time);
       resolve(time);
     });
   });
 };
 
-const q2 = () => {
-  return new Promise((resolve, reject) => {
+const timeOut = () => {
+  return new Promise(resolve => {
     rl.question('Time out: ', answer => {
       const time = moment(answer, 'HH:mm a').format('LT');
-      console.log('TIME: ', time);
       resolve(time);
     });
   });
@@ -28,31 +39,44 @@ const q2 = () => {
 
 const main = async () => {
   console.log(
-    'Be sure to enter times correctly. Examples: 8:00 AM, 10:39 AM, 1:25 PM, 13:25 PM, etc.'
+    chalk.yellow(
+      'For timing in or out, enter the time shown on your work timesheet. Be sure to include AM or PM.\nExamples: 8:00 AM, 09:00 AM, 10:39 AM, 1:25 PM, 13:25 PM, etc.'
+    )
   );
+
+  const maxClocksOut = await timesClockedOut();
 
   let timingInAndOut = [];
 
-  timingInAndOut.push(await q1());
-  for (let i = 0; i < 1; i++) {
-    timingInAndOut.push(await q2());
-    timingInAndOut.push(await q1());
+  timingInAndOut.push(await timeIn());
+  for (let i = 0; i < maxClocksOut; i++) {
+    timingInAndOut.push(await timeOut());
+    timingInAndOut.push(await timeIn());
   }
 
-  const startTime = moment(timingInAndOut[0], 'HH:mm a');
-  const minutesPassed = moment(timingInAndOut[1], 'HH:mm a').diff(
-    startTime,
-    'minutes'
-  );
+  let totalMinutesPassed = 0;
+
+  for (let i = 0; i <= maxClocksOut; i += 2) {
+    let minutesPassed = moment(timingInAndOut[i + 1], 'HH:mm a').diff(
+      moment(timingInAndOut[i], 'HH:mm a'),
+      'minutes'
+    );
+    totalMinutesPassed += minutesPassed;
+  }
 
   const hoursToWorkPerDayInMinutes = 480;
-  const timeLeft = hoursToWorkPerDayInMinutes - minutesPassed;
+  const timeLeft = hoursToWorkPerDayInMinutes - totalMinutesPassed;
 
-  const timeToClockOut = moment(timingInAndOut[2], 'HH:mm a')
+  const timeToClockOut = moment(
+    timingInAndOut[timingInAndOut.length - 1],
+    'HH:mm a'
+  )
     .add(timeLeft, 'minutes')
     .format('LT');
 
-  console.log('You should clock out at: ', timeToClockOut);
+  console.log(
+    chalk.yellow('You should clock out at: ', chalk.magenta(timeToClockOut))
+  );
 
   rl.close();
 };

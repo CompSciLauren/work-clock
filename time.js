@@ -9,7 +9,8 @@ const rl = readline.createInterface({
 const q1 = () => {
   return new Promise((resolve, reject) => {
     rl.question('Time in: ', answer => {
-      const time = moment(answer, 'HH:mm').format('LT');
+      const time = moment(answer, 'HH:mm a').format('LT');
+      console.log('TIME: ', time);
       resolve(time);
     });
   });
@@ -18,33 +19,36 @@ const q1 = () => {
 const q2 = () => {
   return new Promise((resolve, reject) => {
     rl.question('Time out: ', answer => {
-      const time = moment(answer, 'HH:mm').format('LT');
-      resolve(time);
-    });
-  });
-};
-
-const q3 = () => {
-  return new Promise((resolve, reject) => {
-    rl.question('Time in: ', answer => {
-      const time = moment(answer, 'HH:mm').format('LT');
+      const time = moment(answer, 'HH:mm a').format('LT');
+      console.log('TIME: ', time);
       resolve(time);
     });
   });
 };
 
 const main = async () => {
-  const answer1 = await q1();
-  const answer2 = await q2();
-  const answer3 = await q3();
+  console.log(
+    'Be sure to enter times correctly. Examples: 8:00 AM, 10:39 AM, 1:25 PM, 13:25 PM, etc.'
+  );
 
-  const startTime = moment(answer1, 'HH:mm');
-  const minutesPassed = moment(answer2, 'HH:mm').diff(startTime, 'minutes');
+  let timingInAndOut = [];
+
+  timingInAndOut.push(await q1());
+  for (let i = 0; i < 1; i++) {
+    timingInAndOut.push(await q2());
+    timingInAndOut.push(await q1());
+  }
+
+  const startTime = moment(timingInAndOut[0], 'HH:mm a');
+  const minutesPassed = moment(timingInAndOut[1], 'HH:mm a').diff(
+    startTime,
+    'minutes'
+  );
 
   const hoursToWorkPerDayInMinutes = 480;
   const timeLeft = hoursToWorkPerDayInMinutes - minutesPassed;
 
-  const timeToClockOut = moment(answer3, 'HH:mm')
+  const timeToClockOut = moment(timingInAndOut[2], 'HH:mm a')
     .add(timeLeft, 'minutes')
     .format('LT');
 

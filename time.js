@@ -44,11 +44,8 @@ const main = async () => {
   const hoursToWorkPerDayInMinutes = (await hoursToWorkToday()) * 60;
   const timeLeft = hoursToWorkPerDayInMinutes - (await hoursWorkedSoFar() * 60);
 
-  let timingInAndOut = [];
-  timingInAndOut.push(await timeIn());
-
   const timeToClockOut = moment(
-    timingInAndOut[timingInAndOut.length - 1],
+    await timeIn(),
     'HH:mm a'
   )
     .add(timeLeft, 'minutes')

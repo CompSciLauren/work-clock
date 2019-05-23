@@ -18,4 +18,4 @@ Installation:
 
 To run program:
 
-`node .\time.js`
+`node ./time.js`

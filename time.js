@@ -19,10 +19,10 @@ const hoursToWorkToday = () => {
   });
 };
 
-const timesClockedOut = () => {
+const hoursWorkedSoFar = () => {
   return new Promise(resolve => {
     rl.question(
-      'How many times did you clock out today? Enter an integer value: ',
+      'How many hours have you worked so far? Enter a real number value: ',
       answer => {
         const result = answer;
         resolve(result);
@@ -33,16 +33,7 @@ const timesClockedOut = () => {
 
 const timeIn = () => {
   return new Promise(resolve => {
-    rl.question('Time in: ', answer => {
-      const time = moment(answer, 'HH:mm a').format('LT');
-      resolve(time);
-    });
-  });
-};
-
-const timeOut = () => {
-  return new Promise(resolve => {
-    rl.question('Time out: ', answer => {
+    rl.question('Last time you clocked in? Enter the time: ', answer => {
       const time = moment(answer, 'HH:mm a').format('LT');
       resolve(time);
     });
@@ -52,32 +43,15 @@ const timeOut = () => {
 const main = async () => {
   console.log(
     chalk.yellow(
-      'For timing in or out, enter the time shown on your work timesheet. Be sure to include AM or PM.\nExamples: 8:00 AM, 09:00 AM, 10:39 AM, 1:25 PM, 13:25 PM, etc.'
+      'For timing in, enter the time shown on your work timesheet. Be sure to include AM or PM.\nExamples: 8:00 AM, 09:00 AM, 10:39 AM, 1:25 PM, 13:25 PM, etc.'
     )
   );
 
-  const maxClocksOut = await timesClockedOut();
+  const hoursToWorkPerDayInMinutes = (await hoursToWorkToday()) * 60;
+  const timeLeft = hoursToWorkPerDayInMinutes - (await hoursWorkedSoFar() * 60);
 
   let timingInAndOut = [];
-
   timingInAndOut.push(await timeIn());
-  for (let i = 0; i < maxClocksOut; i++) {
-    timingInAndOut.push(await timeOut());
-    timingInAndOut.push(await timeIn());
-  }
-
-  let totalMinutesPassed = 0;
-
-  for (let i = 0; i <= maxClocksOut; i += 2) {
-    let minutesPassed = moment(timingInAndOut[i + 1], 'HH:mm a').diff(
-      moment(timingInAndOut[i], 'HH:mm a'),
-      'minutes'
-    );
-    totalMinutesPassed += minutesPassed;
-  }
-
-  const hoursToWorkPerDayInMinutes = (await hoursToWorkToday()) * 60;
-  const timeLeft = hoursToWorkPerDayInMinutes - totalMinutesPassed;
 
   const timeToClockOut = moment(
     timingInAndOut[timingInAndOut.length - 1],

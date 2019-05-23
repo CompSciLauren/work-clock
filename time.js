@@ -7,6 +7,18 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
+const hoursToWorkToday = () => {
+  return new Promise(resolve => {
+    rl.question(
+      'How many hours are you working today? Enter a real number value: ',
+      answer => {
+        const result = answer;
+        resolve(result);
+      }
+    );
+  });
+};
+
 const timesClockedOut = () => {
   return new Promise(resolve => {
     rl.question(
@@ -64,7 +76,7 @@ const main = async () => {
     totalMinutesPassed += minutesPassed;
   }
 
-  const hoursToWorkPerDayInMinutes = 480;
+  const hoursToWorkPerDayInMinutes = (await hoursToWorkToday()) * 60;
   const timeLeft = hoursToWorkPerDayInMinutes - totalMinutesPassed;
 
   const timeToClockOut = moment(

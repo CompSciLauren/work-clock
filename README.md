@@ -2,7 +2,7 @@
 
 A CLI that lets user know what time they should clock out at work. Built with NodeJS.
 
-## Project Screen Shot
+## Project Screenshot
 
 ![Work Clock Demo](docs/work-clock-demo.png)
 

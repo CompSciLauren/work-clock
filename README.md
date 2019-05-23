@@ -4,7 +4,7 @@ A CLI that lets user know what time they should clock out at work. Built with No
 
 ## Project Screenshot
 
-![Work Clock Demo](docs/work-clock-demo.png)
+![Work Clock Demo](docs/demo.png)
 
 ## Installation and Setup Instructions
 

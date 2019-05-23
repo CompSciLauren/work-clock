@@ -10,7 +10,7 @@ const rl = readline.createInterface({
 const hoursToWorkToday = () => {
   return new Promise(resolve => {
     rl.question(
-      'How many hours are you working today? Enter a real number value: ',
+      chalk.cyan('Number of hours to work today: '),
       answer => {
         const result = answer;
         resolve(result);
@@ -22,7 +22,7 @@ const hoursToWorkToday = () => {
 const hoursWorkedSoFar = () => {
   return new Promise(resolve => {
     rl.question(
-      'How many hours have you worked so far? Enter a real number value: ',
+      chalk.cyan('Total hours worked (up to last clock-in time): '),
       answer => {
         const result = answer;
         resolve(result);
@@ -33,7 +33,7 @@ const hoursWorkedSoFar = () => {
 
 const timeIn = () => {
   return new Promise(resolve => {
-    rl.question('Last time you clocked in? Enter the time: ', answer => {
+    rl.question(chalk.cyan('Time of last clock-in (e.g. 12:30 PM): '), answer => {
       const time = moment(answer, 'HH:mm a').format('LT');
       resolve(time);
     });
@@ -41,12 +41,6 @@ const timeIn = () => {
 };
 
 const main = async () => {
-  console.log(
-    chalk.yellow(
-      'For timing in, enter the time shown on your work timesheet. Be sure to include AM or PM.\nExamples: 8:00 AM, 09:00 AM, 10:39 AM, 1:25 PM, 13:25 PM, etc.'
-    )
-  );
-
   const hoursToWorkPerDayInMinutes = (await hoursToWorkToday()) * 60;
   const timeLeft = hoursToWorkPerDayInMinutes - (await hoursWorkedSoFar() * 60);
 

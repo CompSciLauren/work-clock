@@ -4,7 +4,9 @@ A CLI that lets user know what time they should clock out at work. Built with No
 
 ## Project Screenshot
 
-![Work Clock Demo](docs/demo.png)
+<p align="center">
+  <img src="docs/demo.png" alt="Screenshot showing an example of the terminal output when a user runs the program">
+</p>
 
 ## Installation and Setup Instructions
 
@@ -14,6 +16,6 @@ Installation:
 
 `npm install`
 
-To Start Program:
+To run program:
 
 `node .\time.js`

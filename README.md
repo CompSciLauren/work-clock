@@ -1,8 +1,8 @@
-# work-clock
+# Work Clock
 
 A CLI that lets user know what time they should clock out at work. Built with NodeJS.
 
-## Project Screenshot
+## Demo
 
 <p align="center">
   <img src="docs/demo.png" alt="Screenshot showing an example of the terminal output when a user runs the program">
